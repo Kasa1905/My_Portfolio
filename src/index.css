@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-loki-void: #050505;
+  --color-loki-green: #50C878;
+  --color-loki-gold: #FFD700;
+  --color-loki-darkgreen: #1a472a;
+
+  --font-sans: 'Inter', sans-serif;
+
+  --animate-glitch: glitch 1s linear infinite;
+
+  @keyframes glitch {
+    0% {
+      transform: translate(0)
+    }
+
+    20% {
+      transform: translate(-2px, 2px)
+    }
+
+    40% {
+      transform: translate(-2px, -2px)
+    }
+
+    60% {
+      transform: translate(2px, 2px)
+    }
+
+    80% {
+      transform: translate(2px, -2px)
+    }
+
+    100% {
+      transform: translate(0)
+    }
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-loki-void);
+    color: white;
+    overflow-x: hidden;
+    background-image: radial-gradient(circle at 50% 50%, #0a1a10 0%, #050505 100%);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background-color: var(--color-loki-green);
+    color: white;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a472a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #50C878;
+}
+
+.glitch-hover:hover {
+  animation: var(--animate-glitch) 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
