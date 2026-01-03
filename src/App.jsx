@@ -4,6 +4,30 @@ import { Github, Linkedin, Mail, ExternalLink, Code2, Database, Terminal, Cpu, C
 
 const Portfolio = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [showGreenGlow, setShowGreenGlow] = useState(false);
+
+  // Console easter egg
+  useEffect(() => {
+    try {
+      console.log("%cYou weren't supposed to look here.", "color: #50C878; font-size: 14px; font-weight: bold;");
+      console.log("%cSince you did... welcome.", "color: #888; font-size: 12px;");
+    } catch (e) {
+      // Fail silently
+    }
+  }, []);
+
+  // Keyboard shortcut easter egg (L key)
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'l' || e.key === 'L') {
+        setShowGreenGlow(true);
+        setTimeout(() => setShowGreenGlow(false), 800);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -13,6 +37,12 @@ const Portfolio = () => {
 
   return (
     <div className="min-h-screen font-sans text-gray-300 selection:bg-loki-green selection:text-white overflow-hidden">
+      {/* Green glow overlay (L key easter egg) */}
+      {showGreenGlow && (
+        <div className="fixed inset-0 pointer-events-none z-[100] bg-loki-green/10 animate-pulse"
+          style={{ animation: 'pulse 0.8s ease-out' }} />
+      )}
+
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-loki-void opacity-90 mx-auto" />
@@ -37,12 +67,37 @@ const Portfolio = () => {
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [logoHoverTime, setLogoHoverTime] = useState(0);
+  const [triggerLogoSpin, setTriggerLogoSpin] = useState(false);
+  const hoverTimerRef = React.useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogoMouseEnter = () => {
+    hoverTimerRef.current = setInterval(() => {
+      setLogoHoverTime(prev => {
+        const newTime = prev + 100;
+        if (newTime >= 3000) {
+          setTriggerLogoSpin(true);
+          setTimeout(() => setTriggerLogoSpin(false), 1000);
+          clearInterval(hoverTimerRef.current);
+          return 0;
+        }
+        return newTime;
+      });
+    }, 100);
+  };
+
+  const handleLogoMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearInterval(hoverTimerRef.current);
+    }
+    setLogoHoverTime(0);
+  };
 
   return (
     <motion.nav
@@ -52,7 +107,16 @@ const Navbar = () => {
         }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center text-sm tracking-widest font-semibold uppercase text-loki-gold/80">
-        <span className="text-xl font-bold tracking-tight text-loki-green">KS<span className="text-loki-gold">.</span></span>
+        <span
+          className={`text-xl font-bold tracking-tight text-loki-green cursor-pointer transition-all duration-300 hover:scale-105 ${triggerLogoSpin ? 'animate-spin' : ''}`}
+          onMouseEnter={handleLogoMouseEnter}
+          onMouseLeave={handleLogoMouseLeave}
+          style={{
+            filter: triggerLogoSpin ? 'drop-shadow(0 0 8px rgba(80, 200, 120, 0.8))' : 'none'
+          }}
+        >
+          KS<span className="text-loki-gold">.</span>
+        </span>
         <ul className="hidden md:flex space-x-8">
           {['Origin', 'Abilities', 'Projects', 'Contact'].map((item) => (
             <li key={item}>
@@ -68,6 +132,35 @@ const Navbar = () => {
 };
 
 const Hero = () => {
+  const [clickCount, setClickCount] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const clickTimerRef = React.useRef(null);
+
+  const handleNameClick = () => {
+    setClickCount(prev => {
+      const newCount = prev + 1;
+
+      // Reset timer
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current);
+      }
+
+      // Reset counter after 3 seconds of inactivity
+      clickTimerRef.current = setTimeout(() => {
+        setClickCount(0);
+      }, 3000);
+
+      // Trigger easter egg at 5 clicks
+      if (newCount >= 5) {
+        setShowEasterEgg(true);
+        setTimeout(() => setShowEasterEgg(false), 5000);
+        return 0; // Reset
+      }
+
+      return newCount;
+    });
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 z-10 pt-20">
       <motion.div
@@ -98,16 +191,31 @@ const Hero = () => {
         </motion.h2>
 
         <motion.h1
-          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 relative"
+          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 relative cursor-pointer select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
+          onClick={handleNameClick}
         >
           <span className="glitch-hover inline-block">KAUSHIK</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-loki-gold to-[#f0e68c] glitch-hover inline-block">SAMBE</span>
         </motion.h1>
 
+        {/* Easter egg message */}
+        <AnimatePresence>
+          {showEasterEgg && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="text-loki-green/70 text-sm italic font-light"
+            >
+              Trust me. This wasn't the first version.
+            </motion.p>
+          )}
+        </AnimatePresence>
+
         <motion.p
-          className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed"
+          className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -252,7 +360,7 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-24 relative z-10 container mx-auto px-6">
-      <SectionTitle title="Glorious Purpose" subtitle="Selected Projects" />
+      <SectionTitle title="Things I've Built" subtitle="Selected Works" />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 auto-rows-[minmax(0,_1fr)]">
         {projects.map((project, idx) => (
