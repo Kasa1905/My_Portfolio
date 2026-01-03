@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Github, Linkedin, Mail, ExternalLink, Code2, Database, Terminal, Cpu, ChevronDown } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code2, Database, Terminal, Cpu, ChevronDown, ArrowRight } from 'lucide-react';
+import ParticleBackground from './components/ParticleBackground';
+import SectionSeparator from './components/SectionSeparator';
 
 const Portfolio = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -11,6 +13,9 @@ const Portfolio = () => {
     try {
       console.log("%cYou weren't supposed to look here.", "color: #50C878; font-size: 14px; font-weight: bold;");
       console.log("%cSince you did... welcome.", "color: #888; font-size: 12px;");
+      setTimeout(() => {
+        console.log("%c✓ Bonus points for curiosity.", "color: #50C878; font-size: 12px; font-style: italic;");
+      }, 500);
     } catch (e) {
       // Fail silently
     }
@@ -53,10 +58,15 @@ const Portfolio = () => {
 
       <Navbar />
       <Hero />
+      <SectionSeparator />
       <About />
+      <SectionSeparator />
       <Skills />
+      <SectionSeparator />
       <Projects />
+      <SectionSeparator />
       <Experience />
+      <SectionSeparator />
       <Contact />
       <Footer />
     </div>
@@ -103,29 +113,40 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-loki-void/80 backdrop-blur-md border-b border-white/5 py-4' : 'bg-transparent py-6'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-loki-void/80 backdrop-blur-xl border-b border-white/5 py-6' : 'bg-transparent py-8'
         }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center text-sm tracking-widest font-semibold uppercase text-loki-gold/80">
+      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+        {/* Links on left */}
+        <ul className="hidden md:flex space-x-10">
+          {['Origin', 'Abilities', 'Projects', 'Contact'].map((item) => (
+            <motion.li 
+              key={item}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              <a
+                href={`#${item.toLowerCase()}`}
+                className="link-underline text-sm font-medium tracking-wider uppercase text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                {item}
+              </a>
+            </motion.li>
+          ))}
+        </ul>
+
+        {/* Logo on right */}
         <span
-          className={`text-xl font-bold tracking-tight text-loki-green cursor-pointer transition-all duration-300 hover:scale-105 ${triggerLogoSpin ? 'animate-spin' : ''}`}
+          className={`text-2xl font-bold tracking-tight text-loki-green cursor-pointer transition-all duration-300 hover:scale-105 ${triggerLogoSpin ? 'animate-spin' : ''}`}
           onMouseEnter={handleLogoMouseEnter}
           onMouseLeave={handleLogoMouseLeave}
+          title="Keep hovering... if you're patient enough"
           style={{
             filter: triggerLogoSpin ? 'drop-shadow(0 0 8px rgba(80, 200, 120, 0.8))' : 'none'
           }}
         >
           KS<span className="text-loki-gold">.</span>
         </span>
-        <ul className="hidden md:flex space-x-8">
-          {['Origin', 'Abilities', 'Projects', 'Contact'].map((item) => (
-            <li key={item}>
-              <a href={`#${item.toLowerCase()}`} className="hover:text-loki-green transition-colors cursor-pointer text-xs">
-                {item}
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </motion.nav>
   );
@@ -140,21 +161,18 @@ const Hero = () => {
     setClickCount(prev => {
       const newCount = prev + 1;
 
-      // Reset timer
       if (clickTimerRef.current) {
         clearTimeout(clickTimerRef.current);
       }
 
-      // Reset counter after 3 seconds of inactivity
       clickTimerRef.current = setTimeout(() => {
         setClickCount(0);
       }, 3000);
 
-      // Trigger easter egg at 5 clicks
       if (newCount >= 5) {
         setShowEasterEgg(true);
         setTimeout(() => setShowEasterEgg(false), 5000);
-        return 0; // Reset
+        return 0;
       }
 
       return newCount;
@@ -162,42 +180,30 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 z-10 pt-20">
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0, filter: "blur(10px)" }}
-        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-48 h-48 md:w-64 md:h-64 mb-16 rounded-full border-2 border-loki-gold/20 flex items-center justify-center group"
-      >
-        {/* Abstract Avatar Placeholder with Loki Horns hint */}
-        <div className="absolute inset-0 rounded-full border border-loki-green/30 animate-ping opacity-20" />
-        <div className="w-full h-full bg-gradient-to-br from-loki-void to-gray-900 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(80,200,120,0.2)] group-hover:shadow-[0_0_80px_rgba(80,200,120,0.4)] transition-all duration-700">
-          <span className="text-loki-green font-bold text-6xl md:text-7xl opacity-80 group-hover:scale-110 transition-transform duration-500">KS</span>
-        </div>
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-12 z-10" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
+      {/* Particle Background */}
+      <ParticleBackground />
 
-        {/* Decorative Lines */}
-        <div className="absolute -top-4 -left-4 w-10 h-10 border-t-2 border-loki-gold opacity-60" />
-        <div className="absolute -bottom-4 -right-4 w-10 h-10 border-b-2 border-loki-gold opacity-60" />
-      </motion.div>
-
-      <div className="space-y-4 max-w-4xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-loki-green text-base md:text-xl font-semibold tracking-[0.3em] uppercase"
-        >
-          Data Manager & Engineer
-        </motion.h2>
-
+      {/* Cinematic Content */}
+      <div className="relative z-10 max-w-6xl mx-auto w-full">
+        {/* Massive Headline */}
         <motion.h1
-          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-6 relative cursor-pointer select-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          className="font-bold tracking-tight text-white mb-12 cursor-pointer select-none"
+          style={{
+            lineHeight: 1.12,
+            letterSpacing: '-0.03em'
+          }}
+          initial={{ opacity: 0, filter: "blur(12px)", y: 30 }}
+          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           onClick={handleNameClick}
         >
-          <span className="glitch-hover inline-block">KAUSHIK</span> <span className="text-transparent bg-clip-text bg-gradient-to-r from-loki-gold to-[#f0e68c] glitch-hover inline-block">SAMBE</span>
+          <div style={{ fontSize: 'clamp(4.6rem, 12vw, 10.5rem)' }}>
+            Kaushik Sambe<span className="text-loki-gold">.</span>
+          </div>
+          <div style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.5rem)', marginTop: 'clamp(0.6rem, 2vw, 1.2rem)' }} className="text-gray-300">
+            I break systems. Then fix them properly.
+          </div>
         </motion.h1>
 
         {/* Easter egg message */}
@@ -207,34 +213,51 @@ const Hero = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="text-loki-green/70 text-sm italic font-light"
+              className="text-loki-green/70 text-sm italic font-light mb-6"
             >
               Trust me. This wasn't the first version.
             </motion.p>
           )}
         </AnimatePresence>
 
-        <motion.p
-          className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light"
+        {/* Subheading */}
+        <motion.div
+          className="max-w-3xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p
+            className="text-gray-300 font-light leading-relaxed mb-6"
+            style={{
+              fontSize: 'clamp(1.7rem, 3.2vw, 2.7rem)',
+              lineHeight: 1.35
+            }}
+          >
+            Data Manager & Engineer building impactful solutions through automation and modern tech.
+          </p>
+
+          <p className="text-gray-500 text-base md:text-lg leading-relaxed max-w-2xl" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.65 }}>
+            Specializing in <span className="text-loki-green">Python</span>, <span className="text-loki-green">React</span>, and <span className="text-loki-green">Google Apps Script</span> to streamline workflows and create meaningful digital experiences.
+          </p>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="mt-20 flex items-center gap-3 text-gray-500 text-sm uppercase tracking-widest"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 1.2, duration: 1 }}
         >
-          Designing Impactful Solutions through <span className="text-loki-green font-semibold">Code</span> & <span className="text-loki-green font-semibold">Automation</span>.
-        </motion.p>
+          <span>Scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-4 h-4" />
+          </motion.div>
+        </motion.div>
       </div>
-
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-      >
-        <a href="#origin" className="flex flex-col items-center gap-2 text-loki-gold/50 hover:text-loki-gold transition-colors text-xs uppercase tracking-widest group">
-          Explore Nexus
-          <ChevronDown className="w-5 h-5 animate-bounce group-hover:text-loki-green" />
-        </a>
-      </motion.div>
     </section>
   );
 };
@@ -247,36 +270,44 @@ const About = () => {
   ];
 
   return (
-    <section id="origin" className="py-24 relative z-10 container mx-auto px-6">
-      <SectionTitle title="The Origin" subtitle="Background & Education" />
+    <section id="origin" className="relative z-10 container mx-auto px-6" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <SectionTitle title="The Origin" subtitle="Background & Education" />
+      </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-16 items-start mt-12">
+      <div className="grid md:grid-cols-2 gap-12 items-start" style={{ marginTop: 'clamp(3rem, 6vh, 5rem)' }}>
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
-          className="bg-white/5 border border-white/5 p-8 rounded-sm backdrop-blur-sm relative overflow-hidden group"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="card-premium bg-white/5 border border-white/5 p-10 backdrop-blur-sm relative overflow-hidden group"
         >
-          <div className="absolute top-0 left-0 w-1 h-full bg-loki-green transform scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
-          <p className="text-lg leading-relaxed text-gray-300">
-            I am a motivated <span className="text-white font-medium">Software Engineer</span> with a passion for scripting, automation, and full-stack development. Currently pursuing a Bachelor’s in Computer Engineering, I specialize in building impactful solutions using <span className="text-loki-green">Python, C++, and Modern Web Technologies</span>. My approach combines strong problem-solving skills with a drive to optimize and automate complex workflows.
+          <div className="absolute top-0 left-0 w-1 h-full bg-loki-green transform scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+          <p className="text-base md:text-lg leading-relaxed text-gray-300" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.8 }}>
+            I am a motivated <span className="text-white font-semibold">Software Engineer</span> with a passion for scripting, automation, and full-stack development. Currently pursuing a Bachelor's in Computer Engineering, I specialize in building impactful solutions using <span className="text-loki-green font-medium">Python, C++, and Modern Web Technologies</span>. My approach combines strong problem-solving skills with a drive to optimize and automate complex workflows.
           </p>
         </motion.div>
 
-        <div className="space-y-8 relative border-l border-white/10 pl-8 ml-4 md:ml-0">
+        <div className="space-y-10 relative border-l-2 border-white/10 pl-10 ml-4 md:ml-0">
           {timeline.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative"
+              transition={{ delay: index * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="relative group"
             >
-              <div className="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-loki-void border border-loki-green shadow-[0_0_10px_rgba(80,200,120,0.5)]" />
-              <span className="text-loki-green text-sm font-mono mb-1 block">{item.year}</span>
-              <h3 className="text-white font-bold text-lg">{item.title}</h3>
-              <p className="text-gray-500 text-sm">{item.place}</p>
+              <div className="absolute -left-[45px] top-1 w-5 h-5 rounded-full bg-loki-void border-2 border-loki-green shadow-[0_0_12px_rgba(80,200,120,0.6)] group-hover:shadow-[0_0_20px_rgba(80,200,120,0.8)] transition-shadow duration-300" />
+              <span className="text-loki-green text-sm font-mono mb-2 block tracking-wider">{item.year}</span>
+              <h3 className="text-white font-bold text-xl mb-1">{item.title}</h3>
+              <p className="text-gray-500 text-base">{item.place}</p>
             </motion.div>
           ))}
         </div>
@@ -294,27 +325,34 @@ const Skills = () => {
   ];
 
   return (
-    <section id="abilities" className="py-24 relative z-10 bg-loki-void/30">
+    <section id="abilities" className="relative z-10 bg-loki-void/30" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
       <div className="container mx-auto px-6">
-        <SectionTitle title="Abilities" subtitle="Tech Stack Arsenal" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <SectionTitle title="Abilities" subtitle="Tech Stack Arsenal" />
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" style={{ marginTop: 'clamp(3rem, 6vh, 5rem)' }}>
           {categories.map((cat, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+              initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-[#0a0a0a] border border-white/5 p-6 hover:border-loki-green/40 hover:shadow-[0_0_30px_rgba(80,200,120,0.1)] hover:scale-[1.02] transition-all duration-300 group"
+              transition={{ delay: idx * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="card-premium bg-[#0a0a0a] border border-white/5 p-8 hover:border-loki-green/40 hover:shadow-[0_0_35px_rgba(80,200,120,0.15)] hover:scale-[1.03] transition-all duration-500 group"
             >
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-loki-gold opacity-70 group-hover:opacity-100 transition-opacity">{cat.icon}</span>
+                <span className="text-loki-gold opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">{cat.icon}</span>
                 <h3 className="text-white font-semibold tracking-wide uppercase text-sm">{cat.name}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {cat.skills.map(skill => (
-                  <span key={skill} className="px-2 py-1 text-xs font-mono bg-white/5 text-gray-400 group-hover:text-loki-green transition-colors cursor-default border border-transparent hover:border-loki-green/20">
+                  <span key={skill} className="px-3 py-1.5 text-xs font-mono bg-white/5 text-gray-400 group-hover:text-loki-green group-hover:bg-loki-green/10 transition-all duration-300 cursor-default border border-transparent hover:border-loki-green/30">
                     {skill}
                   </span>
                 ))}
@@ -333,17 +371,20 @@ const Projects = () => {
       title: "ProofVault",
       tech: "Next.js • Solidity • Web3 • AI",
       desc: "NFT-based certification platform integrated with AI-powered chatbots for proof verification and secure management.",
-      highlight: true
+      highlight: true,
+      link: "https://github.com/Kasa1905"
     },
     {
       title: "BeatSync",
       tech: "Next.js • Bun",
-      desc: "Real-time music synchronization app enabling seamless playlist sharing and live streaming with optimized UI/UX."
+      desc: "Real-time music synchronization app enabling seamless playlist sharing and live streaming with optimized UI/UX.",
+      link: "https://github.com/Kasa1905"
     },
     {
       title: "Bank Management System",
       tech: "Python • MySQL • Tkinter",
-      desc: "Comprehensive GUI-based banking system with secure authentication, account handling, and transaction reporting."
+      desc: "Comprehensive GUI-based banking system with secure authentication, account handling, and transaction reporting.",
+      link: "https://github.com/Kasa1905"
     },
     {
       title: "AutomateWithAppsScript",
@@ -354,48 +395,90 @@ const Projects = () => {
     {
       title: "Advanced Encryption Tool",
       tech: "Python • Cryptography",
-      desc: "Custom encryption utility implementing advanced cryptographic algorithms for secure data handling."
+      desc: "Custom encryption utility implementing advanced cryptographic algorithms for secure data handling.",
+      link: "https://github.com/Kasa1905"
     }
   ];
 
   return (
-    <section id="projects" className="py-24 relative z-10 container mx-auto px-6">
+    <section id="projects" className="relative z-10 container mx-auto px-6" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
       <SectionTitle title="Things I've Built" subtitle="Selected Works" />
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 auto-rows-[minmax(0,_1fr)]">
+      <div className="grid md:grid-cols-2 gap-10 mt-16">
         {projects.map((project, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className={`group relative bg-[#080808] border border-white/5 p-8 flex flex-col justify-between hover:-translate-y-2 transition-transform duration-300 ${project.highlight ? 'md:col-span-2 bg-gradient-to-br from-[#080808] to-[#0f1f15]' : ''}`}
+            initial={{ opacity: 0, y: 40, filter: "blur(8px)", scale: 0.96 }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+            whileHover={{ y: -8, scale: 1.02 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{
+              delay: idx * 0.12,
+              duration: 0.8,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className={`card-premium group relative bg-[#0a0a0a] border border-white/8 p-12 flex flex-col justify-between 
+              hover:border-loki-green/40 hover:shadow-[0_0_40px_rgba(80,200,120,0.2),0_20px_60px_rgba(0,0,0,0.5)] 
+              transition-all duration-300 overflow-hidden rounded-lg
+              ${project.highlight ? 'md:col-span-2 md:row-span-1 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#0d1912] border-white/10' : ''}`}
           >
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-loki-gold/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-loki-gold/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <h3 className={`font-bold text-white group-hover:text-loki-gold transition-colors ${project.highlight ? 'text-2xl' : 'text-xl'}`}>
+            {/* Green glow on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-loki-green/0 via-loki-green/0 to-loki-green/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+            <div className="relative z-10">
+              {/* Header */}
+              <div className="flex justify-between items-start mb-8">
+                <h3
+                  className={`font-bold text-white group-hover:text-loki-green transition-colors duration-300 leading-tight tracking-tight
+                    ${project.highlight ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'}`}
+                  style={{ letterSpacing: '-0.02em' }}
+                >
                   {project.title}
                 </h3>
-                {project.link && (
-                  <a href={project.link} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors">
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
-                )}
               </div>
-              <p className="text-loki-green text-xs font-mono mb-4 uppercase tracking-wider opacity-80">{project.tech}</p>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">{project.desc}</p>
+
+              {/* Tech stack */}
+              <p className="text-loki-green/80 text-xs font-mono mb-8 uppercase tracking-widest letter-spacing">
+                {project.tech}
+              </p>
+
+              {/* Description */}
+              <p className={`text-gray-400 leading-relaxed mb-10 ${project.highlight ? 'text-lg' : 'text-base'}`}>
+                {project.desc}
+              </p>
+
+              {/* GitHub Link */}
+              {project.link && (
+                <motion.a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                  className="btn-premium inline-flex items-center gap-3 px-7 py-3.5 bg-white/5 border border-white/15 rounded-md
+                    hover:border-loki-green/50 hover:bg-loki-green/15 text-gray-300 hover:text-loki-green 
+                    transition-all duration-300 group/btn"
+                >
+                  <Github className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+                  <span className="font-medium">View on GitHub</span>
+                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                </motion.a>
+              )}
             </div>
 
+            {/* Decorative icon for highlighted project */}
             {project.highlight && (
-              <div className="absolute bottom-0 right-0 p-8 opacity-5">
-                <Code2 className="w-24 h-24" />
+              <div className="absolute bottom-0 right-0 p-10 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500">
+                <Code2 className="w-32 h-32" />
               </div>
             )}
 
-            <div className="w-8 h-1 bg-loki-green/20 group-hover:bg-loki-green group-hover:w-full transition-all duration-500" />
+            {/* Bottom accent bar */}
+            <div className="absolute bottom-0 left-0 w-12 h-1 bg-loki-green/30 group-hover:w-full group-hover:bg-loki-green transition-all duration-700" />
           </motion.div>
         ))}
       </div>
@@ -405,19 +488,29 @@ const Projects = () => {
 
 const Experience = () => {
   return (
-    <section className="py-24 relative z-10 bg-white/[0.02]">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="flex flex-col md:flex-row gap-12 items-center">
-          <div className="flex-1 text-center md:text-left">
-            <h4 className="text-loki-gold text-sm font-bold uppercase tracking-widest mb-2">Experience</h4>
-            <h2 className="text-3xl font-bold text-white mb-6">Data Manager <span className="text-gray-600">@</span> ACES Club</h2>
-            <p className="text-gray-400 mb-6 leading-relaxed">
-              Orchestrated automated mailing and ticketing workflows for major events like Acunetix and HackSeries.
-              Leveraged <span className="text-loki-green">Google Apps Script</span> and <span className="text-loki-green">JSON</span> to integrate complex datasets, significantly reducing manual overhead and optimizing operational efficiency.
-            </p>
-            <span className="inline-block px-4 py-1 border border-white/10 rounded-full text-xs text-gray-500 font-mono">2024 — 2025</span>
+    <section className="relative z-10 bg-white/[0.02]" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
+      <div className="container mx-auto px-6 max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="card-premium bg-white/5 border border-white/5 p-12 backdrop-blur-sm group hover:border-loki-green/20 hover:shadow-[0_0_40px_rgba(80,200,120,0.1)] transition-all duration-500"
+        >
+          <div className="flex flex-col md:flex-row gap-12 items-start">
+            <div className="flex-1">
+              <h4 className="text-loki-gold text-sm font-bold uppercase tracking-widest mb-3">Experience</h4>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight" style={{ letterSpacing: '-0.02em' }}>
+                Data Manager <span className="text-gray-600">@</span> ACES Club
+              </h2>
+              <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.8 }}>
+                Orchestrated automated mailing and ticketing workflows for major events like Acunetix and HackSeries.
+                Leveraged <span className="text-loki-green font-medium">Google Apps Script</span> and <span className="text-loki-green font-medium">JSON</span> to integrate complex datasets, significantly reducing manual overhead and optimizing operational efficiency.
+              </p>
+              <span className="inline-block px-5 py-2 border border-white/10 rounded-full text-sm text-gray-500 font-mono hover:border-loki-green/30 transition-colors duration-300">2024 — 2025</span>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -425,27 +518,36 @@ const Experience = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-32 relative z-10 container mx-auto px-6 text-center">
+    <section id="contact" className="relative z-10 container mx-auto px-6 text-center" style={{ paddingTop: 'clamp(8rem, 15vh, 12rem)', paddingBottom: 'clamp(8rem, 15vh, 12rem)' }}>
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: true }}
-        className="max-w-2xl mx-auto"
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-3xl mx-auto"
       >
-        <div className="w-16 h-1 bg-loki-gold mx-auto mb-8" />
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">Summon Me.</h2>
-        <p className="text-gray-400 text-lg mb-12">
+        <div className="w-20 h-1 bg-loki-gold mx-auto mb-10" />
+        <h2 className="font-bold text-white mb-10 tracking-tight" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          Summon Me.
+        </h2>
+        <p className="text-gray-400 text-lg md:text-xl mb-16 leading-relaxed max-w-2xl mx-auto" style={{ fontSize: 'clamp(1.1rem, 1.6vw, 1.2rem)', lineHeight: 1.8 }}>
           Open to opportunities where I can learn, grow, and contribute effectively.
           Let's discuss how I can bring value to your next endeavor.
         </p>
 
-        <div className="flex flex-col md:flex-row justify-center gap-8 mb-16">
-          <a href="mailto:sambekaushik@gmail.com" className="flex items-center justify-center gap-3 px-8 py-4 bg-white/5 border border-white/10 hover:border-loki-green text-white hover:text-loki-green transition-all group">
+        <div className="flex flex-col md:flex-row justify-center gap-6 mb-16">
+          <motion.a 
+            href="mailto:sambekaushik@gmail.com" 
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.2 }}
+            className="btn-premium flex items-center justify-center gap-3 px-8 py-5 bg-white/5 border border-white/10 hover:border-loki-green hover:bg-loki-green/10 text-white hover:text-loki-green transition-all duration-300 group"
+          >
             <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            <span>sambekaushik@gmail.com</span>
-          </a>
-          <div className="flex items-center justify-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-gray-300">
-            <span>+91 9321621486</span>
+            <span className="font-medium">sambekaushik@gmail.com</span>
+          </motion.a>
+          <div className="flex items-center justify-center gap-3 px-8 py-5 bg-white/5 border border-white/10 text-gray-300">
+            <span className="font-medium">+91 9321621486</span>
           </div>
         </div>
 
@@ -469,14 +571,22 @@ const Footer = () => (
 const SectionTitle = ({ title, subtitle }) => (
   <div className="mb-12">
     <h3 className="text-loki-green/80 text-xs font-bold uppercase tracking-[0.2em] mb-2 pl-1">{subtitle}</h3>
-    <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">{title}</h2>
+    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{title}</h2>
   </div>
 );
 
 const SocialLink = ({ href, icon }) => (
-  <a href={href} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+  <motion.a 
+    href={href} 
+    target="_blank" 
+    rel="noreferrer" 
+    whileHover={{ scale: 1.15, rotate: 5 }}
+    whileTap={{ scale: 0.9 }}
+    transition={{ duration: 0.2 }}
+    className="text-gray-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
+  >
     {icon}
-  </a>
+  </motion.a>
 )
 
 export default Portfolio;
