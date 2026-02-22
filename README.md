@@ -33,7 +33,7 @@ A premium, professional portfolio website showcasing my work as a Data Manager &
 
 ## 📦 Project Structure
 
-```
+```plaintext
 Portfolio/
 ├── src/
 │   ├── components/
@@ -51,7 +51,7 @@ Portfolio/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -136,7 +136,7 @@ MIT License - feel free to use this project as inspiration for your own portfoli
 ## 🤝 Connect
 
 - **GitHub**: [@Kasa1905](https://github.com/Kasa1905)
-- **Email**: sambekaushik@gmail.com
+- **Email**: <sambekaushik@gmail.com>
 - **Portfolio**: [Live Site](https://kaushik-portfolio.vercel.app)
 
 ---
