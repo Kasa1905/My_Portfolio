@@ -10,12 +10,13 @@
   --font-sans: 'Inter', sans-serif;
 
   /* Premium Typography Scale */
-  --font-size-hero: clamp(4rem, 12vw, 10rem);
-  --font-size-hero-sub: clamp(1.5rem, 3vw, 2.5rem);
-  --font-size-section: clamp(3rem, 6vw, 5rem);
-  --font-size-section-sub: clamp(1rem, 2vw, 1.5rem);
-  --font-size-body-large: clamp(1.25rem, 2vw, 1.75rem);
-  --font-size-body: 1.125rem;
+  --font-size-hero: clamp(4.5rem, 11vw, 9.5rem);
+  --font-size-hero-statement: clamp(2.2rem, 5.5vw, 4.5rem);
+  --font-size-section: clamp(2.5rem, 5vw, 4rem);
+  --font-size-section-sub: clamp(0.875rem, 1.5vw, 1.125rem);
+  --font-size-body-large: clamp(1.125rem, 1.8vw, 1.375rem);
+  --font-size-body: clamp(1rem, 1.2vw, 1.125rem);
+  --font-size-body-small: clamp(0.875rem, 1vw, 1rem);
 
   /* Generous Spacing */
   --spacing-section: clamp(8rem, 15vh, 12rem);
@@ -111,6 +112,8 @@
     color: white;
     overflow-x: hidden;
     background-image: radial-gradient(circle at 50% 50%, #0f1f15 0%, #0a0a0a 100%);
+    font-size: var(--font-size-body);
+    line-height: 1.7;
   }
 
   html {
@@ -123,20 +126,31 @@
   }
 
   /* Premium Typography Defaults */
-  h1,
-  h2,
+  h1 {
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+  }
+
+  h2 {
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+
   h3,
   h4,
   h5,
   h6 {
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-weight: 600;
   }
 
   p {
     line-height: 1.7;
-    max-width: 65ch;
+    max-width: 70ch;
+    font-size: var(--font-size-body);
   }
 }
 

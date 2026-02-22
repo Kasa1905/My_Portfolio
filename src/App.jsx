@@ -188,21 +188,28 @@ const Hero = () => {
       <div className="relative z-10 max-w-6xl mx-auto w-full">
         {/* Massive Headline */}
         <motion.h1
-          className="font-bold tracking-tight text-white mb-12 cursor-pointer select-none"
+          className="font-bold tracking-tight text-white mb-16 cursor-pointer select-none"
           style={{
-            lineHeight: 1.12,
-            letterSpacing: '-0.03em'
+            lineHeight: 1.1,
+            letterSpacing: '-0.035em'
           }}
           initial={{ opacity: 0, filter: "blur(12px)", y: 30 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           onClick={handleNameClick}
         >
-          <div style={{ fontSize: 'clamp(4.6rem, 12vw, 10.5rem)' }}>
+          <div style={{ fontSize: 'clamp(4.5rem, 11vw, 9.5rem)', lineHeight: 1.05 }}>
             Kaushik Sambe<span className="text-loki-gold">.</span>
           </div>
-          <div style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.5rem)', marginTop: 'clamp(0.6rem, 2vw, 1.2rem)' }} className="text-gray-300">
-            I break systems. Then fix them properly.
+          <div 
+            style={{ 
+              fontSize: 'clamp(2.2rem, 5.5vw, 4.5rem)', 
+              marginTop: 'clamp(1rem, 2.5vh, 1.5rem)',
+              lineHeight: 1.2
+            }} 
+            className="text-gray-400 font-medium"
+          >
+            I solve problems others don't see.
           </div>
         </motion.h1>
 
@@ -222,23 +229,29 @@ const Hero = () => {
 
         {/* Subheading */}
         <motion.div
-          className="max-w-3xl"
+          className="max-w-3xl space-y-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <p
-            className="text-gray-300 font-light leading-relaxed mb-6"
+            className="text-gray-300 font-normal leading-relaxed"
             style={{
-              fontSize: 'clamp(1.7rem, 3.2vw, 2.7rem)',
-              lineHeight: 1.35
+              fontSize: 'clamp(1.125rem, 1.8vw, 1.375rem)',
+              lineHeight: 1.6
             }}
           >
             Data Manager & Engineer building impactful solutions through automation and modern tech.
           </p>
 
-          <p className="text-gray-500 text-base md:text-lg leading-relaxed max-w-2xl" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.65 }}>
-            Specializing in <span className="text-loki-green">Python</span>, <span className="text-loki-green">React</span>, and <span className="text-loki-green">Google Apps Script</span> to streamline workflows and create meaningful digital experiences.
+          <p 
+            className="text-gray-500 leading-relaxed max-w-2xl" 
+            style={{ 
+              fontSize: 'clamp(1rem, 1.2vw, 1.125rem)', 
+              lineHeight: 1.7 
+            }}
+          >
+            Specializing in <span className="text-loki-green font-medium">Python</span>, <span className="text-loki-green font-medium">React</span>, and <span className="text-loki-green font-medium">Google Apps Script</span> to streamline workflows and create meaningful digital experiences.
           </p>
         </motion.div>
 
@@ -289,7 +302,13 @@ const About = () => {
           className="card-premium bg-white/5 border border-white/5 p-10 backdrop-blur-sm relative overflow-hidden group"
         >
           <div className="absolute top-0 left-0 w-1 h-full bg-loki-green transform scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
-          <p className="text-base md:text-lg leading-relaxed text-gray-300" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.8 }}>
+          <p 
+            className="text-gray-300 leading-relaxed" 
+            style={{ 
+              fontSize: 'clamp(1rem, 1.2vw, 1.125rem)', 
+              lineHeight: 1.75 
+            }}
+          >
             I am a motivated <span className="text-white font-semibold">Software Engineer</span> with a passion for scripting, automation, and full-stack development. Currently pursuing a Bachelor's in Computer Engineering, I specialize in building impactful solutions using <span className="text-loki-green font-medium">Python, C++, and Modern Web Technologies</span>. My approach combines strong problem-solving skills with a drive to optimize and automate complex workflows.
           </p>
         </motion.div>
@@ -499,15 +518,38 @@ const Experience = () => {
         >
           <div className="flex flex-col md:flex-row gap-12 items-start">
             <div className="flex-1">
-              <h4 className="text-loki-gold text-sm font-bold uppercase tracking-widest mb-3">Experience</h4>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight" style={{ letterSpacing: '-0.02em' }}>
+              <h4 
+                className="text-loki-gold font-bold uppercase tracking-widest mb-3"
+                style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
+              >
+                Experience
+              </h4>
+              <h2 
+                className="font-bold text-white mb-6 tracking-tight" 
+                style={{ 
+                  fontSize: 'clamp(2rem, 4vw, 3rem)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.2
+                }}
+              >
                 Data Manager <span className="text-gray-600">@</span> ACES Club
               </h2>
-              <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.15rem)', lineHeight: 1.8 }}>
+              <p 
+                className="text-gray-400 mb-8 leading-relaxed" 
+                style={{ 
+                  fontSize: 'clamp(1rem, 1.2vw, 1.125rem)', 
+                  lineHeight: 1.75 
+                }}
+              >
                 Orchestrated automated mailing and ticketing workflows for major events like Acunetix and HackSeries.
                 Leveraged <span className="text-loki-green font-medium">Google Apps Script</span> and <span className="text-loki-green font-medium">JSON</span> to integrate complex datasets, significantly reducing manual overhead and optimizing operational efficiency.
               </p>
-              <span className="inline-block px-5 py-2 border border-white/10 rounded-full text-sm text-gray-500 font-mono hover:border-loki-green/30 transition-colors duration-300">2024 — 2025</span>
+              <span 
+                className="inline-block px-5 py-2 border border-white/10 rounded-full text-gray-500 font-mono hover:border-loki-green/30 transition-colors duration-300"
+                style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
+              >
+                2024 — 2025
+              </span>
             </div>
           </div>
         </motion.div>
@@ -527,10 +569,23 @@ const Contact = () => {
         className="max-w-3xl mx-auto"
       >
         <div className="w-20 h-1 bg-loki-gold mx-auto mb-10" />
-        <h2 className="font-bold text-white mb-10 tracking-tight" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+        <h2 
+          className="font-bold text-white mb-10 tracking-tight" 
+          style={{ 
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)', 
+            letterSpacing: '-0.02em', 
+            lineHeight: 1.1 
+          }}
+        >
           Summon Me.
         </h2>
-        <p className="text-gray-400 text-lg md:text-xl mb-16 leading-relaxed max-w-2xl mx-auto" style={{ fontSize: 'clamp(1.1rem, 1.6vw, 1.2rem)', lineHeight: 1.8 }}>
+        <p 
+          className="text-gray-400 mb-16 leading-relaxed max-w-2xl mx-auto" 
+          style={{ 
+            fontSize: 'clamp(1rem, 1.2vw, 1.125rem)', 
+            lineHeight: 1.7 
+          }}
+        >
           Open to opportunities where I can learn, grow, and contribute effectively.
           Let's discuss how I can bring value to your next endeavor.
         </p>
@@ -569,9 +624,23 @@ const Footer = () => (
 // --- Helpers ---
 
 const SectionTitle = ({ title, subtitle }) => (
-  <div className="mb-12">
-    <h3 className="text-loki-green/80 text-xs font-bold uppercase tracking-[0.2em] mb-2 pl-1">{subtitle}</h3>
-    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{title}</h2>
+  <div className="mb-14">
+    <h3 
+      className="text-loki-green/80 font-bold uppercase tracking-[0.2em] mb-3 pl-1"
+      style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
+    >
+      {subtitle}
+    </h3>
+    <h2 
+      className="font-bold text-white tracking-tight"
+      style={{ 
+        fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+        lineHeight: 1.1,
+        letterSpacing: '-0.02em'
+      }}
+    >
+      {title}
+    </h2>
   </div>
 );
 
